@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { Address } from "./address.entity";
 import { Agreement } from "../value-objects/agreement.value-object";
 import { Email } from "../value-objects/email.value-object";
@@ -7,27 +7,27 @@ import { Phone } from "../value-objects/phone.value-object";
 import { Username } from "../value-objects/username.value-object";
 
 @Entity()
-export class User {
+export class User extends BaseEntity {
   
   @PrimaryGeneratedColumn("uuid")
   id: string;
   
-  @Column()
+  @Column(() => Username)
   username: Username;
   
-  @Column()
+  @Column(() => Password)
   password: Password;
   
-  @Column()
+  @Column(() => Email)
   email: Email;
   
-  @Column()
+  @Column(() => Phone)
   phone: Phone;
   
-  @Column()
+  @Column(() => Address)
   address: Address;
   
-  @Column()
+  @Column(() => Agreement)
   agreement: Agreement;
 
 }

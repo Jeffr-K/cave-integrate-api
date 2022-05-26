@@ -7,7 +7,7 @@ export const winstonConfig = {
       level: process.env.NODE_ENV === 'production' ? 'info' : 'silly',
       format: winston.format.combine(
         winston.format.timestamp(),
-        nestWinstonModuleUtilities.format.nestLike('MyApp', { prettyPrint: true }),
+        nestWinstonModuleUtilities.format.nestLike('Cave', { prettyPrint: true }),
       ),
     })
   ]

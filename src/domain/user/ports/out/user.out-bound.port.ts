@@ -1,4 +1,4 @@
-import { User } from "../../entities/user.aggregate-root.entity";
+import { User } from "../../entities/user.entity";
 
 export interface IUserOutBoundPort {
   createUser(): Promise<void>;

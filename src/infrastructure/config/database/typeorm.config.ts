@@ -1,5 +1,8 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { config } from 'dotenv';
+import { join } from 'path';
+
+
 config();
 
 export const typeormConfig: TypeOrmModuleOptions = {
@@ -12,6 +15,8 @@ export const typeormConfig: TypeOrmModuleOptions = {
   synchronize: true,
   logging: true,
   extra: { ssl: { rejectUnauthorized: false }},
-  entities: ["src/**/*.entity.ts"],
+  entities: ["dist/**/*.entity.js"],
+  autoLoadEntities: true,
+  migrations: ["migration/*.js"],
   subscribers: ["src/subscriber/**/*.ts"]
 }

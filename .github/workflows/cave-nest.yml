@@ -1,0 +1,45 @@
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idruns-on
+# https://meetup.toast.com/posts/286
+
+name: Cave Continuous Integration
+
+on:
+  # workflow 파일을 자동으로 트리거하는 이벤트를 명시한다. Push 이벤트를 명시하면 누군가가 깃 레포에 변경사항을 push 하는 시점마다 job 이 실행된다.
+  # 특정 브랜치나, tag 나 path 에서만 실행되도록 할 수 있다. 위 코드처럼 paths 특정 패턴을 설정하여 해당 패턴에 일치하는 파일이 변경되었을 때 workflow 가 실행되도록 설정 할 수 있다.
+  push:
+    branches: [master]
+    paths:
+      - "**.js"
+    paths-ignore:
+      - "doc/**"
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        node-version: [18.2.0]
+    # 독립적인 프로세스(job이 가질 수 있는 동작들의 나열)
+    steps:
+      - name: npm cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner-os }}-build-${{ hashFiles("**/package-lock.json") }}
+          restore-keys: ${{ runner-os }}-build-${{ hashFiles("**/package-lock.json") }}
+    steps:
+      - name: npm install
+        run: npm run install
+    steps:
+      # - uses: actions/checkout@v3
+      - name: Use Node.js Version ${{ matrix.node-version }} # step 이름
+      - uses: actions/checkout@release^v3 # 해당 step 에서 사용할 액션. github 마켓 플레이스에 올라온 action 들을 사용할 수 있다.
+      - uses: actions/setup-node@v3 # 해당 step 에서 사용할 액션
+        with: # with: 해당 action에 의해 정의되는 input 파라미터. key/value 페어로 되어 있다. input 파라미터는 환경 변수로 설정되고, 'INPUT_'이라는 prefix가 붙는다.
+          node-version: ${{ matrix.node-version }}
+      - run: | # 커맨드라인 실행
+          npm ci
+          npm run build --if-present
+          npm test

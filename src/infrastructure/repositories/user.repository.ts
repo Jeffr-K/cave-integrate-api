@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { User } from "src/domain/user/entities/user.aggregate-root.entity";
+import { User } from "src/domain/user/entities/user.entity";
 import { IUserOutBoundPort } from "src/domain/user/ports/out/user.out-bound.port";
 
 @Injectable()
