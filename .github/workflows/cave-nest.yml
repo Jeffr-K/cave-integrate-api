@@ -24,7 +24,7 @@ jobs:
     # 독립적인 프로세스(job이 가질 수 있는 동작들의 나열)
     steps:
       - name: npm cache
-        uses: actions/cache@v2
+        uses: actions/cache@v2!
         with:
           path: ~/.npm
           key: ${{ runner-os }}-build-${{ hashFiles("**/package-lock.json") }}

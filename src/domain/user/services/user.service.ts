@@ -15,4 +15,12 @@ export class UserService {
       throw new NotFoundException(e);
     }
   }
+
+  async deleteUser(id: string): Promise<any> {
+    try {
+      return new ResponseBase(HttpStatusCode.OK, 'true');
+    } catch (e: unknown) {
+      throw new NotFoundException(e);
+    }
+  }
 }

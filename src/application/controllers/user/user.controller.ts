@@ -17,7 +17,7 @@ export class UserController {
   ) {}
   
   @Post()
-  async create(data: UserCreateRequestAdapter): Promise<any> {
+  async create(data: UserCreateRequestAdapter): Promise<any | void> {
     try {
       const local = this.userService.createUser(data);
       const social = this.userService.createUser(data);
@@ -36,8 +36,16 @@ export class UserController {
   }
   
   @Delete()
-  async delete(): Promise<void> {
-
+  async delete(id: string): Promise<any | void> {
+    try {
+      const response = await this.userService.deleteUser(id);
+      if (!response) {
+        return new ResponseBase(HttpStatusCode.SERVER_ERROR);
+      }
+      return response;
+    } catch (e: unknown) {
+      
+    }
   }
   
   @Get()
