@@ -1,13 +1,13 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Address } from "./address.entity";
-import { Agreement } from "../value-objects/agreement.value-object";
+import { Agreement } from "./agreement.entity";
 import { Email } from "../value-objects/email.value-object";
 import { Password } from "../value-objects/password.value-object";
 import { Phone } from "../value-objects/phone.value-object";
 import { Username } from "../value-objects/username.value-object";
 
 @Entity()
-export class User extends BaseEntity {
+export class User {
   
   @PrimaryGeneratedColumn("uuid")
   id: string;
@@ -23,11 +23,13 @@ export class User extends BaseEntity {
   
   @Column(() => Phone)
   phone: Phone;
-  
-  @Column(() => Address)
+
+  @OneToOne(() => Address, { cascade: true, onDelete: "CASCADE", primary: true })
+  @JoinColumn()
   address: Address;
-  
-  @Column(() => Agreement)
+
+  @OneToOne(() => Agreement, { cascade: true, onDelete: "CASCADE", primary: true })
+  @JoinColumn()
   agreement: Agreement;
 
 }

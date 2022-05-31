@@ -1,8 +1,5 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { config } from 'dotenv';
-import { join } from 'path';
-
-
 config();
 
 export const typeormConfig: TypeOrmModuleOptions = {
@@ -18,5 +15,6 @@ export const typeormConfig: TypeOrmModuleOptions = {
   entities: ["dist/**/*.entity.js"],
   autoLoadEntities: true,
   migrations: ["migration/*.js"],
-  subscribers: ["src/subscriber/**/*.ts"]
+  subscribers: ["src/subscriber/**/*.ts"],
+  
 }

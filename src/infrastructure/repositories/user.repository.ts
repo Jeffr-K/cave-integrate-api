@@ -1,19 +1,61 @@
 import { Injectable } from "@nestjs/common";
-import { User } from "src/domain/user/entities/user.entity";
-import { IUserOutBoundPort } from "src/domain/user/ports/out/user.out-bound.port";
+import { ResponseBase } from "src/common/response.base";
+import { User } from "src/modules/user/domain/entities/user.entity";
+import { IUserOutBoundPort } from "src/modules/user/domain/ports/out/user.out-bound.port";
+import { EntityRepository, Repository } from "typeorm";
 
-@Injectable()
-export class UserPersistanceAdapter implements IUserOutBoundPort {
-  
-  constructor() {}
+@EntityRepository(User)
+export class UserRepository extends Repository<User> implements IUserOutBoundPort {
 
-  async createUser(): Promise<void> {}
+  async register(data: any): Promise<boolean> {
+    const result = await this.createQueryBuilder()
+    .insert()
+    .into(User)
+    .values({ ...data })
+    .execute();
+
+    return (result) ? true: false;
+  }  
+
+  async drop(id: string): Promise<boolean> {
+    const result = await this.createQueryBuilder()
+      .delete()
+      .from(User)
+      .where(`id = :id`, { id: id })
+      .execute();
+
+    return (result) ? true: false;
+  }
   
-  async deleteUser(): Promise<void> {}
+  async dropSoftly(): Promise<void> {
+    await this.createQueryBuilder()
+      .softDelete();
+  }
   
-  async updateUser(): Promise<void> {}
+  async restoreSoftDeletion(): Promise<any> {
+    return await this.createQueryBuilder().restore();
+  }
+
+  async updateUser(data: any): Promise<boolean> {
+    const result = await this.createQueryBuilder()
+      .update(User)
+      .set({ ...data })
+      .where(`id = :id`, { id: data.id })
+      .execute();
+
+    return (result) ? true: false;
+  }
   
-  async findUserById(): Promise<User> {
-    return new User;
+  async getUser(uniqueKey: string): Promise<User> {
+    return await this.createQueryBuilder()
+    .select()
+    .from(User, 'user')
+    .where(`user.id = :uniqueKey`, { id: uniqueKey })
+    .orWhere(`user.email = :uniqueKey`, { email: uniqueKey })
+    .getOne();
+  }
+
+  async getUsers(filter?: any): Promise<User[]> {
+    return [];
   }
 }

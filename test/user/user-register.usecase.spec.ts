@@ -1,5 +1,5 @@
 import { UserCreateRequestAdapter } from "src/adapters/in/user.create-request.adapter";
-import { UserService } from "src/domain/user/services/user.service";
+import { UserService } from "src/modules/user/domain/services/user-register.service";
 import { UserController } from "../user/user.controller"
 
 describe("UserController", () => {
