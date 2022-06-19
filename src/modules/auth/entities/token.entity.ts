@@ -1,8 +1,13 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Token {
-  
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -17,5 +22,4 @@ export class Token {
 
   @UpdateDateColumn()
   updatedAt: Date;
-  
 }

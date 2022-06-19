@@ -1,17 +1,21 @@
-import { Module } from "@nestjs/common";
-import { UserController } from "src/modules/user/application/controllers/user.controller";
-import { UserRepository } from "src/infrastructure/repositories/user.repository";
-import { UserDropService } from "./domain/services/user-drop.service";
-import { UserRegisterService } from "./domain/services/user-register.service";
+import { Module } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
+import { UserController } from './application/controllers/user.controller';
+import { UserCreateEventHandler } from './domain/services/user-create.event-handler';
+import { UserEventsHandler } from './domain/events/user.events-handler';
+import { UserConcreteFactory } from './domain/factories/user.factory';
 
-
-const Providers = [UserRegisterService, UserDropService, UserRepository];
-const Controllers = [UserController]
+const Providers = [
+  UserCreateEventHandler,
+  UserEventsHandler,
+  UserConcreteFactory,
+];
+const Controllers = [UserController];
 
 @Module({
-  imports: [],
+  imports: [CqrsModule],
   controllers: [...Controllers],
   providers: [...Providers],
-  exports: []
+  exports: [],
 })
 export class UserModule {}

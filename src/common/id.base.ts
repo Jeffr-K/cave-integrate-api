@@ -1,5 +1,1 @@
-
-
-export class Id {
-
-}
+export class Id {}

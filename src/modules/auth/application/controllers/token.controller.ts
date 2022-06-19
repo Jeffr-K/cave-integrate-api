@@ -1,9 +1,6 @@
-import { Controller } from "@nestjs/common";
-import { domain } from "src/common/controller-url-routing";
+import { Controller } from '@nestjs/common';
 
-@Controller(domain.router.token)
+@Controller('token')
 export class TokenController {
-  
   constructor() {}
-
 }

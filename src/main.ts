@@ -1,8 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston'
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { AppModule } from './app.module';
 import { config } from 'dotenv';
-import { setupSwaggerConfig } from './infrastructure/config/swagger/swagger.config';
+import { setupSwaggerConfig } from './externals/config/swagger/swagger.config';
 config();
 
 async function bootstrap() {
@@ -18,7 +18,7 @@ async function bootstrap() {
       🌸 Environment: ${process.env.NODE_ENV}                          
       🌸 Message: ${process.env.SERVER_BOOT_MESSAGE}..                 
     └────────────────────────────────────────────────────────────────┘
-    `)
+    `);
   });
 }
 bootstrap();

@@ -1,0 +1,13 @@
+
+###
+POST localhost:4000/user
+Content-Type: application/json
+
+{
+  "username": "jeffrey",
+  "password": "test",
+  "email": "wjdrlrkdl3@gmail.com",
+  "address": "incheon",
+  "phone": "010-3123-2244",
+  "agreement": true
+}

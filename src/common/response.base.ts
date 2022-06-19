@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 
 export class ResponseBase {
   private code: number;
@@ -13,5 +13,4 @@ export class ResponseBase {
   async toEntity(...args: any) {}
 
   async toDto(...args: any) {}
-  
 }

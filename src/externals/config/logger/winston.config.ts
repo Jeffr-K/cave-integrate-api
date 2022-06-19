@@ -1,5 +1,8 @@
 import * as winston from 'winston';
-import { utilities as nestWinstonModuleUtilities, WinstonModule } from 'nest-winston';
+import {
+  utilities as nestWinstonModuleUtilities,
+  WinstonModule,
+} from 'nest-winston';
 
 export const winstonConfig = {
   transports: [
@@ -7,8 +10,10 @@ export const winstonConfig = {
       level: process.env.NODE_ENV === 'production' ? 'info' : 'silly',
       format: winston.format.combine(
         winston.format.timestamp(),
-        nestWinstonModuleUtilities.format.nestLike('Cave', { prettyPrint: true }),
+        nestWinstonModuleUtilities.format.nestLike('Cave', {
+          prettyPrint: true,
+        })
       ),
-    })
-  ]
-}
+    }),
+  ],
+};

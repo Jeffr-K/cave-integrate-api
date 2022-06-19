@@ -5,4 +5,5 @@ export interface UserCreateRequestAdapter {
   address: string;
   phone: string;
   agreement: boolean;
+  token: string;
 }

@@ -3,17 +3,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { WinstonModule } from 'nest-winston';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
-import { typeormConfig } from './infrastructure/config/database/typeorm.config';
-import { winstonConfig } from './infrastructure/config/logger/winston.config';
+import { typeormConfig } from './externals/config/database/typeorm.config';
+import { winstonConfig } from './externals/config/logger/winston.config';
 
 const Modules = [UserModule, AuthModule];
 @Module({
   imports: [
     TypeOrmModule.forRoot({ ...typeormConfig }),
     WinstonModule.forRoot({ ...winstonConfig }),
-    ...Modules
+    ...Modules,
   ],
   controllers: [],
-  providers: []
+  providers: [],
 })
 export class AppModule {}

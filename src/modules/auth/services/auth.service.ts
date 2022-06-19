@@ -1,8 +1,7 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AuthService {
-  
   async login(data: any): Promise<boolean> {
     return true;
   }
@@ -10,5 +9,5 @@ export class AuthService {
   async googleLogin() {}
   async facebookLogin() {}
   async kakaoLogin() {}
-  async naverLogin () {}
+  async naverLogin() {}
 }

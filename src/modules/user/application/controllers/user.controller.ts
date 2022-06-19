@@ -1,56 +1,58 @@
-import { Controller, Delete, Get, Inject, LoggerService, Post, Put } from "@nestjs/common";
-import { WINSTON_MODULE_NEST_PROVIDER } from "nest-winston";
-import { UserCreateRequestAdapter } from "src/adapters/in/user.create-request.adapter";
-import { domain } from "src/common/controller-url-routing";
-import { HttpStatusCode } from "src/common/http.status-code";
-import { ResponseBase } from "src/common/response.base";
-import { UserDropService } from "src/modules/user/domain/services/user-drop.service";
-import { UserRegisterService } from "src/modules/user/domain/services/user-register.service";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Inject,
+  LoggerService,
+  Post,
+  Put,
+} from '@nestjs/common';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { UserCreateRequestAdapter } from '../../../../adapters/in/user.create-request.adapter';
+import { ResponseBase } from '../../../../common/response.base';
+import { HttpStatusCode } from '../../../../common/http.status-code';
+import { UserAlreadyExistingException } from '../../errors/user.already-existing.exception';
+import { CommandBus } from '@nestjs/cqrs';
+import { CreateUserCommand } from '../command/create-user.command';
 
-@Controller(domain.router.user)
+@Controller('user')
 export class UserController {
-
   constructor(
-    private readonly userRegisterService: UserRegisterService,
-    private readonly userDropService: UserDropService,
     @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: LoggerService,
+    private commandBus: CommandBus
   ) {}
-  
-  @Post("/")
-  async create(data: UserCreateRequestAdapter): Promise<any | void> {
+
+  @Post('/')
+  async create(@Body() data: UserCreateRequestAdapter): Promise<any | void> {
+    console.log('진입성공', data);
+    this.logger.log('UserController/create()', [{ request: data }]);
+    const { username, password, email, phone, address, agreement, token } = data;
     try {
-      const local = this.userRegisterService.register(data);
-      const social = this.userRegisterService.register(data);
-      if (!local) {
-        return new ResponseBase(HttpStatusCode.SERVER_ERROR); 
-      }
-      return local;
+      const command = new CreateUserCommand(username, password, email, phone, address, agreement, token);
+      return this.commandBus.execute(command);
     } catch (e: unknown) {
-      this.logger.debug("User create Controller :>", e)
+      this.logger.error('UserController/create()', [{ error: e }]);
+      if (e instanceof UserAlreadyExistingException) {
+        return new ResponseBase(HttpStatusCode.SERVER_ERROR, e);
+      }
     }
   }
-  
-  @Put("/")
-  async update(): Promise<void> {
 
-  }
-  
-  @Delete("/")
+  @Put('/')
+  async update(): Promise<void> {}
+
+  @Delete('/')
   async delete(id: string): Promise<any | void> {
-    try {
-      const response = await this.userDropService.drop(id);
-      if (!response) {
-        return new ResponseBase(HttpStatusCode.SERVER_ERROR);
-      }
-      return response;
-    } catch (e: unknown) {
-      
-    }
-  }
-  
-  @Get("/")
-  async findById(): Promise<void> {
 
   }
 
+  @Get('/')
+  async findById(): Promise<void> {}
 }
+
+// const user = this.userRegisterUseCase.registerMembership(data);
+// return new ResponseBase(
+//   HttpStatusCode.CREATED,
+//   'Successfully creating a user.'
+// );
