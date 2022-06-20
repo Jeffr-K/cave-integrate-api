@@ -5,16 +5,18 @@ import { UserCreateEventHandler } from './domain/services/user-create.event-hand
 import { UserEventsHandler } from './domain/events/user.events-handler';
 import { UserConcreteFactory } from './domain/factories/user.factory';
 import { UserRepository } from '../../externals/repositories/user.repository';
+import { MailModule } from '../mail/mail.module';
 
 const Providers = [
   UserCreateEventHandler,
   UserConcreteFactory,
-  UserRepository
+  UserRepository,
+  UserEventsHandler
 ];
 const Controllers = [UserController];
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, MailModule],
   controllers: [...Controllers],
   providers: [...Providers],
   exports: [],

@@ -7,6 +7,7 @@ import * as bcrypt from 'bcryptjs'; // commonJS 에는 default 가 없음
 import { UserConcreteFactory } from '../factories/user.factory';
 import { User } from '../entities/user.entity';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { EmailService } from '../../../mail/email.service';
 
 //https://starplatina.tistory.com/419
 // 휴대폰 인증
@@ -18,10 +19,10 @@ import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 export class UserCreateEventHandler implements ICommandHandler<CreateUserCommand> {
 
   constructor(
-    readonly eventBus: EventBus,
+    @Inject(EventBus) private readonly eventBus: EventBus,
     @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: LoggerService,
     @Inject(UserRepository) readonly userRepository: UserRepository,
-    @Inject(UserConcreteFactory) readonly userConcreteFactory: UserConcreteFactory
+    @Inject(UserConcreteFactory) readonly userConcreteFactory: UserConcreteFactory,
   ) {}
 
   // TODO: Require Test
