@@ -4,11 +4,12 @@ import { UserController } from './application/controllers/user.controller';
 import { UserCreateEventHandler } from './domain/services/user-create.event-handler';
 import { UserEventsHandler } from './domain/events/user.events-handler';
 import { UserConcreteFactory } from './domain/factories/user.factory';
+import { UserRepository } from '../../externals/repositories/user.repository';
 
 const Providers = [
   UserCreateEventHandler,
-  UserEventsHandler,
   UserConcreteFactory,
+  UserRepository
 ];
 const Controllers = [UserController];
 

@@ -30,7 +30,7 @@ export class UserController {
     const { username, password, email, phone, address, agreement, token } = data;
     try {
       const command = new CreateUserCommand(username, password, email, phone, address, agreement, token);
-      return this.commandBus.execute(command);
+      await this.commandBus.execute(command);
     } catch (e: unknown) {
       this.logger.error('UserController/create()', [{ error: e }]);
       if (e instanceof UserAlreadyExistingException) {
