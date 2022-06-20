@@ -1,68 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import { Payload } from './jwt.payload';
-import { jwtOptions } from './jwt.config';
-import jwt from 'jsonwebtoken';
+import { Payload } from '../config/jwt.payload';
+import { jwtAccessTokenOptions, jwtRefreshTokenOptions } from '../config/jwt.config';
+import * as jwt from 'jsonwebtoken';
 import { config } from 'dotenv';
 config();
 
 @Injectable()
 export class TokenService {
-  private secretKey: jwt.Secret;
-
-  constructor() {
-    this.secretKey = process.env.SECRET_KEY;
-  }
+  constructor() {}
 
   async generateAccessToken(payload: Payload): Promise<string> {
-    let accessToken: string;
-
-    await jwt.sign(payload, this.secretKey, jwtOptions, (error, token) => {
-      if (error) {
-        throw new jwt.JsonWebTokenError(
-          'Cannot make access json web token.',
-          error
-        );
-      }
-      accessToken = token;
-      return;
-    });
-    return accessToken;
+    const secretKey = process.env.SECRET_KEY as string;
+    return jwt.sign(payload, secretKey, jwtAccessTokenOptions);
   }
 
   async generateRefreshToken(payload: Payload): Promise<string> {
-    let refreshToken: string;
-    jwtOptions.expiresIn = '7d';
-
-    await jwt.sign(payload, this.secretKey, jwtOptions, (error, token) => {
-      if (error) {
-        throw new jwt.JsonWebTokenError(
-          'Cannot make refresh json web token.',
-          error
-        );
-      }
-      refreshToken = token;
-      return;
-    });
-    return refreshToken;
+    const secretKey = process.env.SECRET_KEY;
+    jwtRefreshTokenOptions.expiresIn = '7d';
+    return jwt.sign(payload, secretKey, jwtRefreshTokenOptions);
   }
 
   async validate(token: string): Promise<boolean> {
+    const secretKey = process.env.SECRET_KEY;
     let result;
 
-    await jwt.verify(
-      token,
-      this.secretKey,
-      { complete: true },
-      (error, decode) => {
-        if (error || !decode) {
-          throw new jwt.JsonWebTokenError(
-            'Cannot validate this token because of some reason.',
-            error
-          );
-        }
-        result = true;
+    await jwt.verify(token, secretKey, { complete: true }, (error, decode) => {
+      if (error || !decode) {
+        throw new jwt.JsonWebTokenError('Cannot validate this token because of some reason.', error);
       }
-    );
+      result = true;
+    });
     return result;
   }
 }

@@ -4,7 +4,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity, Generated,
-  PrimaryGeneratedColumn,
+  PrimaryGeneratedColumn, Unique,
   UpdateDateColumn
 } from 'typeorm';
 
@@ -23,7 +23,7 @@ export class User {
   @Column({ length: 100, nullable: false })
   password: string;
 
-  @Column({ length: 100, nullable: false })
+  @Column({ length: 100, nullable: false, unique: true})
   email: string;
 
   @Column({ length: 100, nullable: false })

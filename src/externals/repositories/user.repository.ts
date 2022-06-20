@@ -1,5 +1,6 @@
 import { createQueryBuilder, EntityRepository, Repository } from 'typeorm';
 import { User } from '../../modules/user/domain/entities/user.entity';
+import { UpdateUserCommand } from '../../modules/user/application/command/update-user.command';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -10,6 +11,45 @@ export class UserRepository extends Repository<User> {
       .values({ ...data })
       .execute();
   }
+
+  async modify(data: any) {
+    return await createQueryBuilder()
+      .update(User)
+      .set({
+        username: data.username,
+        password: data.password,
+        email: data.email,
+        address: data.address,
+        agreement: data.agreement,
+        phone: data.phone
+      })
+      .where(`id = :id`, { id: data.id })
+      .execute();
+  }
+
+  async drop(userId: number) {
+    return await createQueryBuilder()
+      .delete()
+      .from(User, 'user')
+      .where(`user.id = :id`, { id: userId })
+      .execute();
+  }
+
+
+  async findOneById(userId: number) {
+    return await createQueryBuilder()
+      .select('user')
+      .from(User, 'user')
+      .where(`user.id = :id`, { id: userId })
+      .getOneOrFail();
+  }
+
+  async findOneByEmail(email: string) {
+    return await createQueryBuilder()
+      .select('user')
+      .from(User, 'user')
+      .where(`user.email = :email`, { email: email })
+      .getOne()
+  }
 }
 
-//

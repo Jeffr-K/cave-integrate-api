@@ -1,13 +1,17 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './services/auth.service';
 import { TokenService } from './services/token.service';
+import { AuthGuards } from './guards/auth.guards';
+import { AuthController } from './application/controllers/auth.controller';
 
-const Controllers = [];
-const Services = [TokenService, AuthService];
+
+const Controllers = [AuthController];
+const Services = [TokenService, AuthService, AuthGuards];
+
 @Module({
   imports: [],
-  controllers: [],
+  controllers: [...Controllers],
   providers: [...Services],
-  exports: [],
+  exports: [TokenService, AuthService, AuthGuards],
 })
 export class AuthModule {}

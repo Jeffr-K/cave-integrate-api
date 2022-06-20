@@ -10,7 +10,6 @@ export class UserEventsHandler implements IEventHandler<UserCreatedEvent> {
   // command 핸들러가 Publish 메소드로 보낸 이메일을 여기서 처리함.
   async handle(event: UserCreatedEvent) {
     const { email, token } = event;
-    console.log('이벤트 입니다');
     await this.emailService.sendEmail(email, token); // 이벤트를 받아서 핸들링할 때 mail 모듈의 메일 서비스를 이용함. 이메일과 토큰 정보를 넣어서 처리를 위임함.
   }
 }

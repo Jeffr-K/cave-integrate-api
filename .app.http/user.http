@@ -11,3 +11,25 @@ Content-Type: application/json
   "phone": "010-3123-2244",
   "agreement": true
 }
+
+###
+PUT localhost:4000/user
+Content-Type: application/json
+
+{
+  "id": 1,
+  "username": "jihye",
+  "password": "test",
+  "email": "wjdrlrkdl3@gmail.com",
+  "address": "incheon",
+  "phone": "010-3123-2244",
+  "agreement": true
+}
+
+###
+DELETE localhost:4000/user/1
+Content-Type: application/json
+
+###
+GET localhost:4000/users/1
+Content-Type: application/json

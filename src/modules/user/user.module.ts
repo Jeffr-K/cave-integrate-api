@@ -1,22 +1,32 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
-import { UserController } from './application/controllers/user.controller';
-import { UserCreateEventHandler } from './domain/services/user-create.event-handler';
+import { UserCommandController } from './application/controllers/user.command.controller';
+import { UserCreateCommandHandler } from './domain/services/user-create.command-handler';
 import { UserEventsHandler } from './domain/events/user.events-handler';
 import { UserConcreteFactory } from './domain/factories/user.factory';
 import { UserRepository } from '../../externals/repositories/user.repository';
 import { MailModule } from '../mail/mail.module';
+import { AuthGuards } from '../auth/guards/auth.guards';
+import { AuthModule } from '../auth/auth.module';
+import { UserQueryController } from './application/controllers/user.query.controller';
+import { GetUserQueryHandler } from './domain/services/user-get.query.handler';
+import { UserUpdateCommandHandler } from './domain/services/user-update.command-handler';
+import { UserDeleteCommandHandler } from './domain/services/user-delete.command-handler';
 
 const Providers = [
-  UserCreateEventHandler,
+  UserCreateCommandHandler,
+  UserUpdateCommandHandler,
+  UserDeleteCommandHandler,
+  GetUserQueryHandler,
   UserConcreteFactory,
   UserRepository,
-  UserEventsHandler
+  UserEventsHandler,
+  AuthGuards
 ];
-const Controllers = [UserController];
+const Controllers = [UserCommandController, UserQueryController];
 
 @Module({
-  imports: [CqrsModule, MailModule],
+  imports: [CqrsModule, MailModule, AuthModule],
   controllers: [...Controllers],
   providers: [...Providers],
   exports: [],

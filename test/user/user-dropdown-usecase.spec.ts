@@ -1,5 +1,5 @@
 import { UserDeleteRequestAdapter } from 'src/adapters/in/user.delete-request.adapter';
-import { UserController } from 'src/modules/user/application/controllers/user.controller';
+import { UserController } from 'modules/user/application/controllers/user.command.controller';
 import { UserService } from 'src/modules/user/domain/services/user-register.service';
 
 describe('UserController', () => {

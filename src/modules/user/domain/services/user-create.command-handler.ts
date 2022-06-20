@@ -16,7 +16,7 @@ import { EmailService } from '../../../mail/email.service';
 
 @Injectable()
 @CommandHandler(CreateUserCommand)
-export class UserCreateEventHandler implements ICommandHandler<CreateUserCommand> {
+export class UserCreateCommandHandler implements ICommandHandler<CreateUserCommand> {
 
   constructor(
     @Inject(EventBus) private readonly eventBus: EventBus,
@@ -25,10 +25,10 @@ export class UserCreateEventHandler implements ICommandHandler<CreateUserCommand
     @Inject(UserConcreteFactory) readonly userConcreteFactory: UserConcreteFactory,
   ) {}
 
-  // TODO: Require Test
   async execute(command: CreateUserCommand): Promise<void> {
     try {
       const { username, password, email, phone, address, agreement } = command;
+
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
       const user: User = await this.userConcreteFactory.create(
