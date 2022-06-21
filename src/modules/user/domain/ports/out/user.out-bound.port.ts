@@ -1,9 +1,10 @@
 import { User } from '../../entities/user.entity';
+import { DeleteResult, InsertResult, UpdateResult } from 'typeorm';
 
 export interface IUserOutBoundPort {
-  register(data: any): Promise<boolean>;
-  drop(id: string): Promise<boolean>;
-  updateUser(data: any): Promise<boolean>;
-  getUser(uniqueKey: string): Promise<User>;
-  getUsers(filter?: any): Promise<User[]>;
+  insert(data: User): Promise<InsertResult>;
+  modify(data: any): Promise<UpdateResult>;
+  drop(userId: number): Promise<DeleteResult>;
+  findOneById(userId: number): Promise<User>;
+  findOneByEmail(email: string): Promise<User>;
 }

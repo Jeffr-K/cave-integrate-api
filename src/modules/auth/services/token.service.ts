@@ -1,13 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, LoggerService } from '@nestjs/common';
 import { Payload } from '../config/jwt.payload';
 import { jwtAccessTokenOptions, jwtRefreshTokenOptions } from '../config/jwt.config';
 import * as jwt from 'jsonwebtoken';
 import { config } from 'dotenv';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { JsonWebTokenError } from 'jsonwebtoken';
+import { JwtValidationError } from '../errors/jwt-validation.error';
 config();
 
 @Injectable()
 export class TokenService {
-  constructor() {}
+  constructor(@Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: LoggerService) {}
 
   async generateAccessToken(payload: Payload): Promise<string> {
     const secretKey = process.env.SECRET_KEY as string;
@@ -20,16 +23,9 @@ export class TokenService {
     return jwt.sign(payload, secretKey, jwtRefreshTokenOptions);
   }
 
-  async validate(token: string): Promise<boolean> {
+  async validate(token: string): Promise<string | any> {
     const secretKey = process.env.SECRET_KEY;
-    let result;
-
-    await jwt.verify(token, secretKey, { complete: true }, (error, decode) => {
-      if (error || !decode) {
-        throw new jwt.JsonWebTokenError('Cannot validate this token because of some reason.', error);
-      }
-      result = true;
-    });
-    return result;
+    const verified = jwt.verify(token, secretKey);
+    return verified;
   }
 }

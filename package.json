@@ -37,6 +37,7 @@
     "joi": "^17.6.0",
     "js-joda": "^1.11.0",
     "jsonwebtoken": "^8.5.1",
+    "kafkajs": "^2.0.2",
     "mysql2": "^2.3.3",
     "nest-winston": "^1.6.2",
     "reflect-metadata": "^0.1.13",

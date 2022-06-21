@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateUserCommand } from '../../application/command/update-user.command';
-import { UserRepository } from '../../../../externals/repositories/user.repository';
+import { UserRepository } from '../../../../infrastructure/persistance/repositories/user.repository';
 import { Inject, Injectable } from '@nestjs/common';
 
 @Injectable()

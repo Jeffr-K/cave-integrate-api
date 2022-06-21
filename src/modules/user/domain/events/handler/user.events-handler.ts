@@ -1,6 +1,6 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { UserCreatedEvent } from './user-created.event';
-import { EmailService } from '../../../mail/email.service';
+import { UserCreatedEvent } from '../event/user-created.event';
+import { EmailService } from '../../../../mail/email.service';
 
 // command handler 가 이벤트를 발생하고 publish 하면, 이벤트의 내용을 처리해야하므로 이 핸들러가 처리를 함.
 

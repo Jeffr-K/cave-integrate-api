@@ -1,20 +1,18 @@
 import {
   Column,
   CreateDateColumn,
-  Entity,
+  Entity, OneToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
+  UpdateDateColumn
 } from 'typeorm';
+import { User } from '../../user/domain/entities/user.entity';
 
 @Entity()
 export class Token {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @Column()
-  accessToken: string;
-
-  @Column()
+  @Column({ type: 'longtext' })
   refreshToken: string;
 
   @CreateDateColumn()
@@ -22,4 +20,9 @@ export class Token {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToOne(() => User, (user) => user.token)
+  user: User;
+  @Column()
+  userId: number;
 }

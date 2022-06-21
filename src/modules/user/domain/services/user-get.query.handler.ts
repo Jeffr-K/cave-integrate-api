@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUserQuery } from '../../application/query/get-user.query';
-import { UserRepository } from '../../../../externals/repositories/user.repository';
+import { UserRepository } from '../../../../infrastructure/persistance/repositories/user.repository';
 import { Inject } from '@nestjs/common';
 
 @QueryHandler(GetUserQuery)

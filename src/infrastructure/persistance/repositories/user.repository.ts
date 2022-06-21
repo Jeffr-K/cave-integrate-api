@@ -1,9 +1,9 @@
 import { createQueryBuilder, EntityRepository, Repository } from 'typeorm';
-import { User } from '../../modules/user/domain/entities/user.entity';
-import { UpdateUserCommand } from '../../modules/user/application/command/update-user.command';
+import { User } from '../../../modules/user/domain/entities/user.entity';
+import { IUserOutBoundPort } from '../../../modules/user/domain/ports/out/user.out-bound.port';
 
 @EntityRepository(User)
-export class UserRepository extends Repository<User> {
+export class UserRepository extends Repository<User> implements IUserOutBoundPort{
   async insert(data: User) {
     return await createQueryBuilder('user')
       .insert()
@@ -35,7 +35,6 @@ export class UserRepository extends Repository<User> {
       .execute();
   }
 
-
   async findOneById(userId: number) {
     return await createQueryBuilder()
       .select('user')
@@ -51,5 +50,6 @@ export class UserRepository extends Repository<User> {
       .where(`user.email = :email`, { email: email })
       .getOne()
   }
+
 }
 

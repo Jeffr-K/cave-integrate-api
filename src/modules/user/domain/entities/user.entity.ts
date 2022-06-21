@@ -1,15 +1,17 @@
 import {
-  BeforeInsert,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
-  Entity, Generated,
-  PrimaryGeneratedColumn, Unique,
+  Entity, Generated, JoinColumn, OneToOne,
+  PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
+import { AggregateRoot } from '@nestjs/cqrs';
+import { Address } from './address.entity';
+import { Token } from '../../../auth/entities/token.entity';
 
 @Entity()
-export class User {
+export class User extends AggregateRoot {
   @PrimaryGeneratedColumn()
   id: string;
 
@@ -43,6 +45,16 @@ export class User {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @OneToOne(() => Token, (token) => token.user, { createForeignKeyConstraints: true, lazy: true })
+  @JoinColumn()
+  token: Token;
+
+  constructor() {
+    super();
+  }
+
+
 }
 
 // https://jojoldu.tistory.com/600

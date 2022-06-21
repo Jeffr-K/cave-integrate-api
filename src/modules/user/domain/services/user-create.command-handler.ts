@@ -1,8 +1,8 @@
-import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, EventBus, EventPublisher, ICommandHandler } from '@nestjs/cqrs';
 import { CreateUserCommand } from '../../application/command/create-user.command';
 import { Inject, Injectable, LoggerService } from '@nestjs/common';
-import { UserCreatedEvent } from '../events/user-created.event';
-import { UserRepository } from '../../../../externals/repositories/user.repository';
+import { UserCreatedEvent } from '../events/event/user-created.event';
+import { UserRepository } from '../../../../infrastructure/persistance/repositories/user.repository';
 import * as bcrypt from 'bcryptjs'; // commonJS 에는 default 가 없음
 import { UserConcreteFactory } from '../factories/user.factory';
 import { User } from '../entities/user.entity';
@@ -23,6 +23,7 @@ export class UserCreateCommandHandler implements ICommandHandler<CreateUserComma
     @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: LoggerService,
     @Inject(UserRepository) readonly userRepository: UserRepository,
     @Inject(UserConcreteFactory) readonly userConcreteFactory: UserConcreteFactory,
+    @Inject(EventPublisher) private readonly publisher: EventPublisher
   ) {}
 
   async execute(command: CreateUserCommand): Promise<void> {
@@ -39,7 +40,13 @@ export class UserCreateCommandHandler implements ICommandHandler<CreateUserComma
         address,
         agreement
       );
-
+      // eventBus -> EventPublisher는 NestJS CQRS 라이브러리에서 제공하며 메시징 시스템(이벤트 버스, 이벤트를 전달하는 "파이프")을 래핑합니다.
+      // mergeObjectContext() -> NestJS CQRS에서는 이벤트 디스패처를 메시징 시스템에 연결하기 위해 mergeObjectContext를 사용합니다.
+      // Apply() 호출을 사용하여 AggregateRoot에 연결된 DeviceCreatedEvent 이벤트가 이제 이벤트 버스에 연결되었습니다.
+      // this.publisher.mergeObjectContext(aggregate); // ?
+      // aggregate.register(command); // ?
+      // await this eventSourcingHandler.save(aggregate) // 이벤트를 저장: 이벤트 소싱
+      // aggregate.commit(); // ?
       await this.userRepository.insert(user);
 
       await this.eventBus.publish(new UserCreatedEvent(command.email, command.token));

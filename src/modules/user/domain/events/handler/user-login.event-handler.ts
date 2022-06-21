@@ -1,8 +1,8 @@
 import { Inject, Injectable, LoggerService } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { UserLoginCommand } from '../../../auth/events/user-login.command';
+import { UserLoginCommand } from '../../../../auth/events/user-login.command';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
-import { UserRepository } from '../../../../externals/repositories/user.repository';
+import { UserRepository } from '../../../../../infrastructure/persistance/repositories/user.repository';
 
 @Injectable()
 export class UserLoginEventHandler {
@@ -12,9 +12,9 @@ export class UserLoginEventHandler {
     @Inject(UserRepository) readonly userRepository: UserRepository
   ) {}
 
-  @OnEvent('login.command', { async: true })
+  @OnEvent('login.userLoginEvent', { async: true })
   async handleLoginCommandEvent(event: UserLoginCommand) {
-    const user = await this.userRepository.findOneByEmail(event.email);
-    return user;
+    // const user = await this.tokenRepository.setToRefreshToken(event.email, event.token);
+    return "user";
   }
 }
