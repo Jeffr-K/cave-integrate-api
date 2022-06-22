@@ -6,8 +6,13 @@ Content-Type: application/json
 {
   "username": "jeffrey",
   "password": "test",
-  "email": "wjdrlrkdl3@gmail.com",
-  "address": "incheon",
+  "email": "jeff.cofos@gmail.com",
+  "address": {
+    "street": "사동",
+    "county": "중구",
+    "country": "한국",
+    "zipcode": 20413
+  },
   "phone": "010-3123-2244",
   "agreement": true
 }
