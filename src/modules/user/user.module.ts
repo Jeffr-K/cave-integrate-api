@@ -13,6 +13,7 @@ import { GetUserQueryHandler } from './domain/services/user-get.query.handler';
 import { UserUpdateCommandHandler } from './domain/services/user-update.command-handler';
 import { UserDeleteCommandHandler } from './domain/services/user-delete.command-handler';
 import { UserLoginEventHandler } from './domain/events/handler/user-login.event-handler';
+import { AddressConcreteFactory } from './domain/factories/address.factory';
 
 const Providers = [
   UserCreateCommandHandler,
@@ -20,17 +21,18 @@ const Providers = [
   UserDeleteCommandHandler,
   UserLoginEventHandler,
   GetUserQueryHandler,
-  UserConcreteFactory,
   UserRepository,
   UserEventsHandler,
   AuthGuards
 ];
+
+const Factories = [UserConcreteFactory, AddressConcreteFactory];
 const Controllers = [UserCommandController, UserQueryController];
 
 @Module({
   imports: [CqrsModule, MailModule, forwardRef(() => AuthModule)],
   controllers: [...Controllers],
-  providers: [...Providers],
+  providers: [...Providers, ...Factories],
   exports: [UserRepository],
 })
 export class UserModule {}

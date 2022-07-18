@@ -2,7 +2,14 @@ import { NestFactory } from '@nestjs/core';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { AppModule } from './app.module';
 import { config } from 'dotenv';
+// import * as path from 'path';
 import { setupSwaggerConfig } from './infrastructure/config/swagger/swagger.config';
+
+// config({ path: path.resolve(
+//   (process.env.NODE_ENV === 'production')
+//     ? '.env'
+//     : '.development.env'
+// )});
 config();
 
 async function bootstrap() {

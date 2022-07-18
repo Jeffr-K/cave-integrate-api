@@ -31,9 +31,6 @@ export class User extends AggregateRoot {
   @Column({ length: 100, nullable: false })
   phone: string;
 
-  @Column({ length: 100, nullable: false })
-  address: string;
-
   @Column({ nullable: false })
   agreement: boolean;
 
@@ -50,11 +47,12 @@ export class User extends AggregateRoot {
   @JoinColumn()
   token: Token;
 
+  @OneToOne(() => Address, (address) => address.user, { createForeignKeyConstraints: true, lazy: true })
+  @JoinColumn()
+  address: Address;
+
   constructor() {
     super();
   }
 
-
 }
-
-// https://jojoldu.tistory.com/600

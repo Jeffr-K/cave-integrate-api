@@ -4,11 +4,11 @@ config();
 
 export const typeormConfig: TypeOrmModuleOptions = {
   type: 'mysql',
-  host: process.env.DATABASE_HOST,
-  port: Number(process.env.DATABASE_PORT),
-  username: process.env.DATABASE_USERNAME,
-  password: process.env.DATABASE_PASSWORD,
-  database: process.env.DATABASE_NAME,
+  host: process.env.MYSQL_HOST,
+  port: Number(process.env.MYSQL_PORT),
+  username: process.env.MYSQL_ROOT_USER,
+  password: process.env.MYSQL_ROOT_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
   synchronize: true,
   logging: true,
   extra: { ssl: { rejectUnauthorized: false } },

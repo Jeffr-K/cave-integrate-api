@@ -15,14 +15,28 @@ Cave 는 다자간 실시간 음성 통신 기반으로 COVID-19 현대 사회�
 케이브는 다음과 같은 기술 스택을 이용합니다.
 
 TypeScript, Nestjs, TypeORM, MySQL 8.0, Websocket
-Docker, EC2, RDS, GitHub Action
+Docker, EC2, RDS, Route 53, Code deploy, GitHub Action
 
-##### Features
-
+#####
 ✅ 회원
-  - 회원가입
-  - 회원탈퇴
+- 회원가입(핀 번호)
+- 회원탈퇴
+- 회원등급
+- 비밀번호 변경
+- 주소 변경
+- 프로필 추가
+- 프로필 수정
+- 프로필 삭제
+- 프로필 사진 추가
+- 프로필 사진 삭제
+- 프로필 사진 변경
+- Favorite Topics 설정
+- Favorite Topics 삭제
+- Followers
+- Following
 
 ✅ 인증
-  - 로그인
-  - 로그아웃
+- 로그인
+- 로그아웃
+
+
