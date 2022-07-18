@@ -6,6 +6,7 @@ import { UserModule } from './modules/user/user.module';
 import { typeormConfig } from './infrastructure/config/database/typeorm.config';
 import { winstonConfig } from './infrastructure/config/logger/winston.config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { HealthController } from './health.controller';
 
 const Modules = [UserModule, AuthModule];
 @Module({
@@ -15,7 +16,7 @@ const Modules = [UserModule, AuthModule];
     WinstonModule.forRoot({ ...winstonConfig }),
     ...Modules,
   ],
-  controllers: [],
+  controllers: [HealthController],
   providers: [],
 })
 export class AppModule {}
